@@ -1,0 +1,10 @@
+h3. SOC - Simple Object Cache
+
+|_. Primary Author|Chris Shorrock|
+|_. Stable Version|N/A|
+|_. Snapshot Version|1.0-SNAPSHOT|
+|_. Scala Version|2.8.0|
+
+h3. Description:
+
+A really simple map cache implementation in scala, which has rule based expiration of elements, functional constructs and cache stampede protection. Very simplistic, use it if you like. Just threw it in github so that I didn't have to re-implement logic across projects.
