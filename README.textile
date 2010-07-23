@@ -8,3 +8,28 @@ h3. SOC - Simple Object Cache
 h3. Description:
 
 A really simple map cache implementation in scala, which has rule based expiration of elements, functional constructs and cache stampede protection. Very simplistic, use it if you like. Just threw it in github so that I didn't have to re-implement logic across projects.
+
+h3. Usage:
+
+Usage is quite simple. Create an instance of the cache. Pass in a request to retrieve contents with the function needed to populate on cache expiration.
+
+<pre>
+<code class="scala">
+import com.shorrockin.soc._
+val cache = new Soc[String, String](new TimeExpiredRule(60000))
+
+// returns "hello world"
+val cached1 = cache.get("cache-key") { "hello world" }
+
+// still returns "hello world"
+val cached2 = cache.get("cache-key") { "never gets called" }
+
+// based on the rules provided in the Soc constructor, this dictates 
+// that cache elements expire after 60000 msecs.
+Thread.sleep(60000)
+
+// will re-execute the function to re-populate the cache, will
+// return "hello again world"
+val cache3 = cache.get("cache-key") { "hello again world" }
+</code>
+</pre>

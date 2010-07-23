@@ -91,6 +91,7 @@ class SocSpecification extends Specification {
 
 
     "be able to serve stale data while cache is being repopulated" in {
+      
     }
   }
 
