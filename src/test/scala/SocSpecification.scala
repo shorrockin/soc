@@ -82,7 +82,7 @@ class SocSpecification extends Specification {
 
       log("notifying threads to continue")
       waiter.synchronized { waiter.notify() }
-      Thread.sleep(100) // give it a second
+      Thread.sleep(15) // give it a second
       retrieved must beEqual("thread 1")
       t1Blocked must beEqual(false)
       t2Blocked must beEqual(false)
@@ -91,7 +91,34 @@ class SocSpecification extends Specification {
 
 
     "be able to serve stale data while cache is being repopulated" in {
+      val rule    = ExpireWhenISaySo(false)
+      val cache   = new Soc[String, String](rule)
+      val waiter  = "the.waiter"
+      def get()   = cache.get("test") { "normal" }
       
+      get() must beEqual("normal")
+
+      val blocker = new Thread() {
+        override def run() {
+          cache.get("test") { 
+            waiter.synchronized { waiter.wait() }
+            "from-thread"
+          }
+        }
+      }
+
+      rule.shouldExpire = true
+      blocker.start()
+      Thread.sleep(15) // allow waiter to wait and block
+      get() must beEqual("normal") // should return stale data
+
+      waiter.synchronized { waiter.notify() } // allow it to finish
+      Thread.sleep(15)
+
+      rule.shouldExpire = false
+      get() must beEqual("from-thread") // should of populated with long running populate
+      
+
     }
   }
 
