@@ -33,3 +33,25 @@ Thread.sleep(60000)
 val cache3 = cache.get("cache-key") { "hello again world" }
 </code>
 </pre>
+
+h3. Maven Information
+
+<pre>
+<code class="xml">
+  <dependencies>
+    <dependency>
+      <groupId>com.shorrockin</groupId>
+      <artifactId>soc</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+
+  <repositories>
+    <repository>
+      <id>shorrockin.com</id>
+      <name>Shorrockin Repository</name>
+      <url>http://maven.shorrockin.com/</url>
+    </repository>
+  </repositories>
+</code>
+</pre>
